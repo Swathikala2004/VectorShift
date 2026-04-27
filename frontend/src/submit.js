@@ -7,7 +7,7 @@ const SubmitButton = () => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/pipelines/parse",
+        "https://vectorshift-1-9tu8.onrender.com/pipelines/parse",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -15,17 +15,21 @@ const SubmitButton = () => {
         }
       );
 
+      if (!response.ok) {
+        throw new Error("Server error");
+      }
+
       const data = await response.json();
 
       alert(
         `Pipeline Analysis\n` +
-        `\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n` +
+        `────────────────────────────\n` +
         `Nodes:  ${data.num_nodes}\n` +
         `Edges:  ${data.num_edges}\n` +
-        `Is DAG: ${data.is_dag ? "\u2705 Yes" : "\u274c No"}`
+        `Is DAG: ${data.is_dag ? "✅ Yes" : "❌ No"}`
       );
     } catch (err) {
-      console.error(err);
+      console.error("Error:", err);
       alert("Failed to connect to the backend.");
     }
   };
